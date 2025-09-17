@@ -9,9 +9,7 @@ interface ICompponentRecycleOptions {
 	isDelayed?: boolean;
 }
 
-export class ComponentRecycleSystem
-	extends System<GameAspect>
-	implements proto.IInitSystem, proto.IRunSystem {
+export class ComponentRecycleSystem extends System<GameAspect> {
 
 	private _iterator!: proto.IIt;
 	private readonly _includeCtor!: ComponentConstructor<Component>;

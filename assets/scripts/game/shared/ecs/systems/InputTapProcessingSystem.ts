@@ -4,9 +4,7 @@ import { GameAspect } from 'db://assets/scripts/game/GameAspect';
 import { System } from 'db://assets/scripts/import/ecs/extra';
 import { EventTouch, game, input, Input, Vec2 } from 'cc';
 
-export class InputMoveProcessingSystem
-	extends System<GameAspect>
-	implements proto.IInitSystem, proto.IRunSystem {
+export class InputMoveProcessingSystem extends System<GameAspect> {
 
 	constructor() {
 

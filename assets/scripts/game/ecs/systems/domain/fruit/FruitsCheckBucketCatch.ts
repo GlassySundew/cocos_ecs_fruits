@@ -7,8 +7,8 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class FruitsCheckBucketCatch extends System<GameAspect> {
 
-	private _fruitsIterator!: proto.IIt;
-	private _bucketIterator!: proto.IIt;
+	private fruitsIterator!: proto.IIt;
+	private bucketIterator!: proto.IIt;
 
 	constructor() {
 
@@ -19,22 +19,22 @@ export class FruitsCheckBucketCatch extends System<GameAspect> {
 
 		super.init(systems);
 
-		this._fruitsIterator = this.filterInc([FruitTagComponent, PositionComponent]);
-		this._bucketIterator = this.filterInc([BucketTagComponent, PositionComponent]);
+		this.fruitsIterator = this.filterInc([FruitTagComponent, PositionComponent]);
+		this.bucketIterator = this.filterInc([BucketTagComponent, PositionComponent]);
 	}
 
 	override run(): void {
 
 		super.run();
 
-		const bucketEntity = this.getFirstEntity(this._bucketIterator);
+		const bucketEntity = this.getFirstEntity(this.bucketIterator);
 
 		if (!bucketEntity)
 			return;
 
-		for (this._fruitsIterator.begin(); this._fruitsIterator.next();) {
+		for (this.fruitsIterator.begin(); this.fruitsIterator.next();) {
 
-			const fruitEntity = this._fruitsIterator.entity();
+			const fruitEntity = this.fruitsIterator.entity();
 
 			this.checkFruit(bucketEntity, fruitEntity);
 		}

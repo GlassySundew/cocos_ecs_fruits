@@ -7,9 +7,9 @@ import * as input from 'db://assets/scripts/game/shared/ecs/components/Input';
 
 export class BucketNodeSwipeSystem extends System<GameAspect> {
 
-	private _inputIterator!: proto.It;
-	private _bucketNode!: Node;
-	private _bgNode!: Node;
+	private inputIterator!: proto.It;
+	private bucketNode!: Node;
+	private bgNode!: Node;
 
 	public constructor() {
 
@@ -24,16 +24,16 @@ export class BucketNodeSwipeSystem extends System<GameAspect> {
 		const services = systems.services();
 		const context = services.get(GameContext.name) as GameContext;
 
-		this._inputIterator = this.filterInc([input.InputMoveComponent], world);
-		this._bucketNode = context.bucket;
-		this._bgNode = context.bg;
+		this.inputIterator = this.filterInc([input.InputMoveComponent], world);
+		this.bucketNode = context.bucket;
+		this.bgNode = context.bg;
 	}
 
 	public override run(): void {
 
 		super.run();
 
-		const entity = this.getFirstEntity(this._inputIterator);
+		const entity = this.getFirstEntity(this.inputIterator);
 
 		if (entity === null)
 			return;
@@ -43,12 +43,12 @@ export class BucketNodeSwipeSystem extends System<GameAspect> {
 		if (!moveInputComponent)
 			return;
 
-		const mat = this._bgNode.getWorldMatrix().invert();
+		const mat = this.bgNode.getWorldMatrix().invert();
 		const worldPosition = Vec2.transformMat4(new Vec2(), moveInputComponent?.worldPosition, mat);
 
-		this._bucketNode.setPosition(
+		this.bucketNode.setPosition(
 			worldPosition.x,
-			this._bucketNode.position.y
+			this.bucketNode.position.y
 		);
 	}
 }

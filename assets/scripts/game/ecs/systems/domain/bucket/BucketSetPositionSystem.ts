@@ -8,8 +8,8 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class BucketSetPositionSystem extends System<GameAspect> {
 
-	private _bucketDomainIterator!: proto.It;
-	private _bucketNode!: Node;
+	private bucketDomainIterator!: proto.It;
+	private bucketNode!: Node;
 
 	public constructor() {
 
@@ -24,15 +24,15 @@ export class BucketSetPositionSystem extends System<GameAspect> {
 		const services = systems.services();
 		const context = services.get(GameContext.name) as GameContext;
 
-		this._bucketDomainIterator = this.filterInc([BucketTagComponent], world);
-		this._bucketNode = context.bucket;
+		this.bucketDomainIterator = this.filterInc([BucketTagComponent], world);
+		this.bucketNode = context.bucket;
 	}
 
 	public override run(): void {
 
 		super.run();
 
-		const bucketEntity = this.getFirstEntity(this._bucketDomainIterator);
+		const bucketEntity = this.getFirstEntity(this.bucketDomainIterator);
 
 		if (bucketEntity === null)
 			return;
@@ -42,7 +42,7 @@ export class BucketSetPositionSystem extends System<GameAspect> {
 		if (posComp === null)
 			return;
 
-		posComp.x = this._bucketNode.position.x;
-		posComp.y = this._bucketNode.position.y;
+		posComp.x = this.bucketNode.position.x;
+		posComp.y = this.bucketNode.position.y;
 	}
 }

@@ -7,7 +7,7 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class CountdownTimerUpdateSystem extends System<GameAspect> {
 
-	private _timerIterator!: proto.It;
+	private timerIterator!: proto.It;
 
 	public constructor() {
 
@@ -18,14 +18,14 @@ export class CountdownTimerUpdateSystem extends System<GameAspect> {
 
 		super.init(systems);
 
-		this._timerIterator = this.filterInc([CountdownTimerComponent]);
+		this.timerIterator = this.filterInc([CountdownTimerComponent]);
 	}
 
 	public override run(): void {
 
 		super.run();
 
-		const timerEntity = this.getFirstEntity(this._timerIterator);
+		const timerEntity = this.getFirstEntity(this.timerIterator);
 
 		if (timerEntity === null)
 			return;

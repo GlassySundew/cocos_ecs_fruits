@@ -7,8 +7,7 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class FruitSetSpritePositionAfterModelSystem extends System<GameAspect> {
 
-	private _iterator!: proto.IIt;
-
+	private iterator!: proto.IIt;
 
 	constructor() {
 
@@ -19,16 +18,16 @@ export class FruitSetSpritePositionAfterModelSystem extends System<GameAspect> {
 
 		super.init(systems);
 
-		this._iterator = this.filterInc([FruitTagComponent]);
+		this.iterator = this.filterInc([FruitTagComponent]);
 	}
 
 	override run(): void {
 
 		super.run();
 
-		for (this._iterator.begin(); this._iterator.next();) {
+		for (this.iterator.begin(); this.iterator.next();) {
 
-			const fruitEntity = this._iterator.entity();
+			const fruitEntity = this.iterator.entity();
 
 			this.processFruit(fruitEntity);
 		}

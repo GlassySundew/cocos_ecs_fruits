@@ -8,7 +8,7 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class FruitFallProcessSystem extends System<GameAspect> {
 
-	private _iterator!: proto.IIt;
+	private iterator!: proto.IIt;
 
 	constructor() {
 
@@ -19,7 +19,7 @@ export class FruitFallProcessSystem extends System<GameAspect> {
 
 		super.init(systems);
 
-		this._iterator = this.filterInc([FruitTagComponent, PositionComponent, VelocityComponent]);
+		this.iterator = this.filterInc([FruitTagComponent, PositionComponent, VelocityComponent]);
 
 		const services = systems.services();
 		const context = services.get(GameContext.name) as GameContext;
@@ -29,9 +29,9 @@ export class FruitFallProcessSystem extends System<GameAspect> {
 
 		super.run();
 
-		for (this._iterator.begin(); this._iterator.next();) {
+		for (this.iterator.begin(); this.iterator.next();) {
 
-			const fruitEntity = this._iterator.entity();
+			const fruitEntity = this.iterator.entity();
 
 			this.processFruitFall(fruitEntity);
 		}

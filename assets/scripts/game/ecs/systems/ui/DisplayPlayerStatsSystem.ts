@@ -9,9 +9,9 @@ import { HealthComponent, PointsComponent } from "db://assets/scripts/game/ecs/c
 
 export class DisplayPlayerStatsSystem extends System<GameAspect> {
 
-	private _playerIterator!: proto.It;
-	private _pointCounter!: Label;
-	private _healthCounter!: Label;
+	private playerIterator!: proto.It;
+	private pointCounter!: Label;
+	private healthCounter!: Label;
 
 	public constructor() {
 
@@ -26,28 +26,28 @@ export class DisplayPlayerStatsSystem extends System<GameAspect> {
 		const services = systems.services();
 		const context = services.get(GameContext.name) as GameContext;
 
-		this._playerIterator = this.filterInc([
+		this.playerIterator = this.filterInc([
 			PlayerTagComponent,
 			HealthComponent,
 			PointsComponent
 		], world);
-		this._pointCounter = context.pointCounter;
-		this._healthCounter = context.healthCounter;
+		this.pointCounter = context.pointCounter;
+		this.healthCounter = context.healthCounter;
 	}
 
 	public override run(): void {
 
 		super.run();
 
-		const entity = this.getFirstEntity(this._playerIterator);
+		const entity = this.getFirstEntity(this.playerIterator);
 
 		if (entity === null)
 			return;
 
 		const health = this.getComponent(entity, HealthComponent)!;
-		this._healthCounter.string = `${health.value}`;
+		this.healthCounter.string = `${health.value}`;
 
 		const points = this.getComponent(entity, PointsComponent)!;
-		this._pointCounter.string = `${points.value}`;
+		this.pointCounter.string = `${points.value}`;
 	}
 }

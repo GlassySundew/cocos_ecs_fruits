@@ -4,8 +4,7 @@ import { PositionComponent } from "db://assets/scripts/game/shared/ecs/component
 import { System } from "db://assets/scripts/import/ecs/extra";
 import * as proto from 'db://assets/scripts/import/ecs/proto';
 
-export class BucketCreateSystem extends System<GameAspect>
-	implements proto.IInitSystem {
+export class BucketCreateSystem extends System<GameAspect> {
 
 	constructor() {
 

@@ -8,9 +8,9 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class FruitFalloffDestroySystem extends System<GameAspect> {
 
-	private _iterator!: proto.IIt;
-	private _fruitDestroyZone!: Node;
-	private _fruitParent!: Node;
+	private iterator!: proto.IIt;
+	private fruitDestroyZone!: Node;
+	private fruitParent!: Node;
 
 	constructor() {
 
@@ -21,21 +21,21 @@ export class FruitFalloffDestroySystem extends System<GameAspect> {
 
 		super.init(systems);
 
-		this._iterator = this.filterInc([FruitTagComponent, PositionComponent]);
+		this.iterator = this.filterInc([FruitTagComponent, PositionComponent]);
 
 		const services = systems.services();
 		const context = services.get(GameContext.name) as GameContext;
-		this._fruitDestroyZone = context.fruitDestroyZone;
-		this._fruitParent = context.fruitParent;
+		this.fruitDestroyZone = context.fruitDestroyZone;
+		this.fruitParent = context.fruitParent;
 	}
 
 	override run(): void {
 
 		super.run();
 
-		for (this._iterator.begin(); this._iterator.next();) {
+		for (this.iterator.begin(); this.iterator.next();) {
 
-			const fruitEntity = this._iterator.entity();
+			const fruitEntity = this.iterator.entity();
 
 			this.processFruitFall(fruitEntity);
 		}
@@ -45,8 +45,8 @@ export class FruitFalloffDestroySystem extends System<GameAspect> {
 
 		const pos = this.getComponent(fruitEntity, PositionComponent)!;
 
-		const parentTransform = this._fruitParent.getComponent(UITransform)!;
-		const destroyTransform = this._fruitDestroyZone.getComponent(UITransform)!;
+		const parentTransform = this.fruitParent.getComponent(UITransform)!;
+		const destroyTransform = this.fruitDestroyZone.getComponent(UITransform)!;
 		const worldPos = parentTransform?.convertToWorldSpaceAR(new Vec3(pos.x, pos.y, 0));
 
 		if (destroyTransform.convertToNodeSpaceAR(worldPos).y < 0) {

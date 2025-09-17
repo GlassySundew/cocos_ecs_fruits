@@ -8,9 +8,9 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class FruitInitPlaceSystem extends System<GameAspect> {
 
-	private _iterator!: proto.IIt;
-	private _fruitPlacerNode!: Node;
-	private _fruitParent!: Node;
+	private iterator!: proto.IIt;
+	private fruitPlacerNode!: Node;
+	private fruitParent!: Node;
 
 	constructor() {
 
@@ -21,22 +21,22 @@ export class FruitInitPlaceSystem extends System<GameAspect> {
 
 		super.init(systems);
 
-		this._iterator = this.filterInc([CreateComponent, FruitTagComponent]);
+		this.iterator = this.filterInc([CreateComponent, FruitTagComponent]);
 
 		const services = systems.services();
 		const context = services.get(GameContext.name) as GameContext;
 
-		this._fruitPlacerNode = context.fruitSpawnZone;
-		this._fruitParent = context.fruitParent;
+		this.fruitPlacerNode = context.fruitSpawnZone;
+		this.fruitParent = context.fruitParent;
 	}
 
 	override run(): void {
 
 		super.run();
 
-		for (this._iterator.begin(); this._iterator.next();) {
+		for (this.iterator.begin(); this.iterator.next();) {
 
-			const newFruitEntity = this._iterator.entity();
+			const newFruitEntity = this.iterator.entity();
 
 			this.initFruit(newFruitEntity);
 		}
@@ -44,7 +44,7 @@ export class FruitInitPlaceSystem extends System<GameAspect> {
 
 	private initFruit(fruitEntity: proto.Entity) {
 
-		const size = this._fruitPlacerNode.getComponent(UITransform);
+		const size = this.fruitPlacerNode.getComponent(UITransform);
 
 		if (size == null)
 			return;
@@ -56,7 +56,7 @@ export class FruitInitPlaceSystem extends System<GameAspect> {
 		);
 		const globalPos = size.convertToWorldSpaceAR(localPoint);
 
-		const parentUI = this._fruitParent.getComponent(UITransform)!;
+		const parentUI = this.fruitParent.getComponent(UITransform)!;
 		const posInParent = parentUI.convertToNodeSpaceAR(globalPos);
 
 		this.addComponentAndSet(

@@ -6,7 +6,7 @@ import { CheckPlayerHealthForGameOver } from 'db://assets/scripts/game/ecs/syste
 import { CheckTimerForGameOver } from 'db://assets/scripts/game/ecs/systems/domain/timer/CheckTimerForGameOver';
 import { CountdownTimerUpdateSystem } from 'db://assets/scripts/game/ecs/systems/domain/timer/CountdownTimerUpdateSystem';
 import { FruitActivateSystem } from 'db://assets/scripts/game/ecs/systems/domain/fruit/FruitActivateSystem';
-import { FruitFalloffDestroySystem } from 'db://assets/scripts/game/ecs/systems/domain/fruit/FruitFalloffDestroySystem';
+import { FruitFalloffDestroySystem } from 'db://assets/scripts/game/ecs/systems/ui/FruitFalloffDestroySystem';
 import { FruitFallProcessSystem } from 'db://assets/scripts/game/ecs/systems/domain/fruit/FruitFallProcessSystem';
 import { FruitInitPlaceSystem } from 'db://assets/scripts/game/ecs/systems/ui/FruitInitPlaceSystem';
 import { FruitInitTypeSystem } from 'db://assets/scripts/game/ecs/systems/domain/fruit/FruitInitTypeSystem';
@@ -68,6 +68,18 @@ export class GameMain extends Component {
 		const world = new proto.World(aspect);
 		const updateSystems = new proto.Systems(world);
 
+		this.createMainSystems(updateSystems);
+
+		updateSystems
+			.addService(this.context)
+			.init();
+
+		this.updateSystems = updateSystems;
+		this.world = world;
+	}
+
+	private createMainSystems(updateSystems: proto.Systems) {
+
 		updateSystems
 			.addSystem(new InputMoveProcessingSystem())
 
@@ -102,12 +114,6 @@ export class GameMain extends Component {
 			.addSystem(new ComponentRecycleSystem({ include: input.InputMoveComponent }))
 			.addSystem(new ComponentRecycleSystem({ include: CreateComponent }))
 
-			.addSystem(new EntityRecycleSystem(GameAspect.name, DestroyComponent))
-
-			.addService(this.context)
-			.init();
-
-		this.updateSystems = updateSystems;
-		this.world = world;
+			.addSystem(new EntityRecycleSystem(GameAspect.name, DestroyComponent));
 	}
 }

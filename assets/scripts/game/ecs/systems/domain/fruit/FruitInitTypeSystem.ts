@@ -11,7 +11,7 @@ import { randomEnum } from "db://assets/scripts/game/shared/utils";
 
 export class FruitInitTypeSystem extends System<GameAspect> {
 
-	private _iterator!: proto.IIt;
+	private iterator!: proto.IIt;
 
 	constructor() {
 
@@ -22,16 +22,16 @@ export class FruitInitTypeSystem extends System<GameAspect> {
 
 		super.init(systems);
 
-		this._iterator = this.filterInc([CreateComponent, FruitTagComponent]);
+		this.iterator = this.filterInc([CreateComponent, FruitTagComponent]);
 	}
 
 	override run(): void {
 
 		super.run();
 
-		for (this._iterator.begin(); this._iterator.next();) {
+		for (this.iterator.begin(); this.iterator.next();) {
 
-			const newFruitEntity = this._iterator.entity();
+			const newFruitEntity = this.iterator.entity();
 
 			this.initFruit(newFruitEntity);
 		}

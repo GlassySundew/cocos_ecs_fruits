@@ -10,8 +10,8 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class FruitActivateSystem extends System<GameAspect> {
 
-	private _activatedFruitsIterator!: proto.It;
-	private _playerIterator!: proto.It;
+	private activatedFruitsIterator!: proto.It;
+	private playerIterator!: proto.It;
 
 	public constructor() {
 
@@ -22,27 +22,20 @@ export class FruitActivateSystem extends System<GameAspect> {
 
 		super.init(systems);
 
-		const world = systems.world();
-		const services = systems.services();
-		const context = services.get(GameContext.name) as GameContext;
-
-		this._activatedFruitsIterator = this.filterInc([
-			FruitTagComponent,
-			ActivateComponent
-		], world);
-		this._playerIterator = this.filterInc([PlayerTagComponent], world);
+		this.activatedFruitsIterator = this.filterInc([FruitTagComponent, ActivateComponent]);
+		this.playerIterator = this.filterInc([PlayerTagComponent]);
 	}
 
 	public override run(): void {
 
 		super.run();
 
-		const fruitEntity = this.getFirstEntity(this._activatedFruitsIterator);
+		const fruitEntity = this.getFirstEntity(this.activatedFruitsIterator);
 
 		if (fruitEntity === null)
 			return;
 
-		const playerEntity = this.getFirstEntity(this._playerIterator);
+		const playerEntity = this.getFirstEntity(this.playerIterator);
 
 		if (playerEntity === null)
 			return;

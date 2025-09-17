@@ -7,7 +7,7 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class CheckTimerForGameOver extends System<GameAspect> {
 
-	private _timerIterator!: proto.It;
+	private timerIterator!: proto.It;
 
 	public constructor() {
 
@@ -20,14 +20,14 @@ export class CheckTimerForGameOver extends System<GameAspect> {
 
 		const world = systems.world();
 
-		this._timerIterator = this.filterInc([TimerTagComponent, CountdownTimerComponent], world);
+		this.timerIterator = this.filterInc([TimerTagComponent, CountdownTimerComponent], world);
 	}
 
 	public override run(): void {
 
 		super.run();
 
-		const tagEntity = this.getFirstEntity(this._timerIterator);
+		const tagEntity = this.getFirstEntity(this.timerIterator);
 
 		if (tagEntity === null)
 			return;

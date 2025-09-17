@@ -11,8 +11,8 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class FruitInitSpriteSystem extends System<GameAspect> {
 
-	private _iterator!: proto.IIt;
-	private _fruitParent!: Node;
+	private iterator!: proto.IIt;
+	private fruitParent!: Node;
 
 	constructor() {
 
@@ -23,21 +23,21 @@ export class FruitInitSpriteSystem extends System<GameAspect> {
 
 		super.init(systems);
 
-		this._iterator = this.filterInc([CreateComponent, FruitTagComponent, FruitEffectComponent]);
+		this.iterator = this.filterInc([CreateComponent, FruitTagComponent, FruitEffectComponent]);
 
 		const services = systems.services();
 		const context = services.get(GameContext.name) as GameContext;
 
-		this._fruitParent = context.fruitParent;
+		this.fruitParent = context.fruitParent;
 	}
 
 	override run(): void {
 
 		super.run();
 
-		for (this._iterator.begin(); this._iterator.next();) {
+		for (this.iterator.begin(); this.iterator.next();) {
 
-			const newFruitEntity = this._iterator.entity();
+			const newFruitEntity = this.iterator.entity();
 
 			this.initFruit(newFruitEntity);
 		}
@@ -61,7 +61,7 @@ export class FruitInitSpriteSystem extends System<GameAspect> {
 		this.loadSpriteTexture(sprite, randomSpr);
 
 		node.scale.set(FRUIT_SPRITE_SCALE, FRUIT_SPRITE_SCALE);
-		this._fruitParent.addChild(node);
+		this.fruitParent.addChild(node);
 
 		this.addComponentAndSet(
 			fruitEntity,

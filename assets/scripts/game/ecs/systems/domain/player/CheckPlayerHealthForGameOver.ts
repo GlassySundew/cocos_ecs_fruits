@@ -7,7 +7,7 @@ import * as proto from 'db://assets/scripts/import/ecs/proto';
 
 export class CheckPlayerHealthForGameOver extends System<GameAspect> {
 
-	private _playerIterator!: proto.It;
+	private playerIterator!: proto.It;
 
 	public constructor() {
 
@@ -20,14 +20,14 @@ export class CheckPlayerHealthForGameOver extends System<GameAspect> {
 
 		const world = systems.world();
 
-		this._playerIterator = this.filterInc([PlayerTagComponent], world);
+		this.playerIterator = this.filterInc([PlayerTagComponent], world);
 	}
 
 	public override run(): void {
 
 		super.run();
 
-		const playerEntity = this.getFirstEntity(this._playerIterator);
+		const playerEntity = this.getFirstEntity(this.playerIterator);
 
 		if (playerEntity === null)
 			return;
